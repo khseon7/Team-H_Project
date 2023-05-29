@@ -9,17 +9,17 @@ class UserForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username','password','email')
+        fields = ['username','password','email']
 
 
 class HPForm(forms.ModelForm):
     class Meta:
         model = HotPlaces
-        fields=('name','address','phone_num', 'rating','image')
+        fields=['name','address','phone_num', 'rating','image']
 
 
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Reviews
-        fields = ('content','rating')
+        fields = ['content','rating']
 

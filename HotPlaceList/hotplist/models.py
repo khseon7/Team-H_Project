@@ -1,12 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+
 
 # Create your models here.
+def validate_rating(value):
+    if value > 5.0 or value < 0.0:
+        raise ValidationError(
+            ('5.0에서 0.0 사이의 값을 입력해주세요'),
+            params= {'value': value},
+        )
+    
+
 class HotPlaces(models.Model):
     name = models.CharField(max_length = 100, null = False)
     address = models.CharField(max_length = 200, null = False)
     phone_num = models.CharField(max_length = 15, null = True, blank = True)
-    rating = models.DecimalField(max_digits = 3, decimal_places = 2)
+    rating = models.DecimalField(max_digits = 2, decimal_places = 1, validators = [validate_rating])
     image = models.ImageField(upload_to = 'images/')
 
 

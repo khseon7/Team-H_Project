@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Techer H-Team 맛집게시판</h1>
+<a href = "{% url 'hotplist:create'%}">
+    <button>맛집 추가하기</button>
+</a>
+{%for items in list%}
+<li>
+   <a href = "{% url 'hotplist:details' items.id%}"> {{items.name}} {{items.rating}}</a>
+</li>
+{% endfor %}
 
 {%endblock%}
