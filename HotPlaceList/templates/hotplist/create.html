@@ -3,7 +3,7 @@
 <form method="POST" action="{%url 'hotplist:create'%}" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_p}}
-
+    {{form.errors}}
     
 
     <button type = "submit">생성하기</button>
