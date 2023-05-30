@@ -1,0 +1,16 @@
+{% extends 'base.html'%}
+{% block content%}
+
+<form method = "POST" action = "{% url 'hotplist:comment_create' HP.id %}">
+{% csrf_token %}
+<h5>내용</h5>
+<textarea label = '댓글' name = "content" rows = 15 col = 15></textarea>
+<h5>평점(5.0에서 0.0 사이의 값을 입력해주세요)</h5>
+<input name = "rating" label = '평점'></input>
+
+<button type = "submit">댓글 저장하기</button>
+{{form.errors}}
+</form>
+
+
+{% endblock %}

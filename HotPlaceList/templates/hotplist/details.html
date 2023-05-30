@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<img src = "{{HP_data.image.url}}" width="400px" style="border-radius:20px">
+<p>{{HP_data.name}}</p>
+<p>{{HP_data.rating}}</p>
+<p>{{HP_data.address}}</p>
+<p>{{HP_data.phone_num}}</p>
+
+
+<a href="{% url 'hotplist:comment_create' HP_data.id %}">
+    <button>댓글 작성하기</button>
+</a>
+{% for items in Review_data.all%}
+<li> 
+    {{items.content}}
+    
+    {{items.rating}}
+
+    {{items.pub_date}}
+</li>
+{% endfor %}
+{% endblock %}
