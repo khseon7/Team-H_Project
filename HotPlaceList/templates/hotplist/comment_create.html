@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% block content%}
 
-<form method = "POST" action = "{% url 'hotplist:comment_create' HP.id %}">
+<form method = "POST">
 {% csrf_token %}
 <h5>내용</h5>
 <textarea label = '댓글' name = "content" rows = 15 col = 15></textarea>

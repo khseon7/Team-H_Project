@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1> {{user.username}}'s profile page</h1>
+<h3>찜목록</h3>
+{% for items in SP_data.all%}
+<li> 
+    <a href = "{% url 'hotplist:details' items.saved.id %}">
+        {{items.saved.name}}
+    </a>
+    <a href = "{% url 'hotplist:save_delete' items.saved.id %}">
+        <button> 삭제</button>
+    </a>
+
+</li>
+{% endfor %}
+
+<br>
+<h3>댓글 목록</h3>
+{% for items in Review_data.all%}
+<li>
+    <a href = "{%url 'hotplist:details' items.place.id %}">
+        {{items.place.name}}
+        <br>
+        {{items.content}}
+        {{items.rating}}
+    </a>
+</li>
+{% endfor %}
+{% endblock %}

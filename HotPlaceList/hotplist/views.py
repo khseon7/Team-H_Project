@@ -4,10 +4,58 @@ from django.contrib import messages
 from .models import HotPlaces, Reviews, SavedPlaces
 from django.http import HttpResponse
 from django.utils import timezone
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.decorators import login_required
 
 
 
-# Create your views here.
+
+def signup(request):
+        if request.method == "POST":
+            form = UserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                raw_username = form.cleaned_data.get('username')
+                raw_password = form.cleaned_data.get('password1')
+                user = authenticate(request, username = raw_username, password = raw_password)
+                if user is not None:
+                    auth_login(request,user)
+                    return redirect("hotplist:index")
+                else:
+                    return redirect("hotplist:signup")
+            else:
+                form = UserForm(request.POST)
+                return render(request, 'hotplist/signup.html' ,{'form':form})
+        else:
+            form = UserForm()
+            return render(request, 'hotplist/signup.html',{'form':form})
+        
+def login(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username = username, password = password)
+        if user is not None:
+            auth_login(request, user)
+            return redirect("hotplist:index")
+        else:
+            return redirect('hotplist:login')
+    else:
+        return render(request, 'hotplist/login.html')           
+    
+
+def logout(request):
+    auth_logout(request)
+    return redirect("hotplist:index")
+
+
+def profile(request):
+    SP_data = SavedPlaces.objects.filter(user = request.user)
+    Review_data = Reviews.objects.filter(author = request.user)
+    return render(request, 'hotplist/profile.html', {'SP_data':SP_data, 'Review_data':Review_data})
+
 ##첫 페이지, 맛집 리스트를 화면에 띄움
 def index(request):
     datas = HotPlaces.objects.all()
@@ -33,7 +81,7 @@ def update_rating(HP_id):
     HP_data.rating = calculate_rating(HP_id)
     HP_data.save()
 
-
+@login_required(login_url= 'hotplist:login')
 def create(request):
     if request.method == 'POST':
         form = HPForm(request.POST, request.FILES)
@@ -56,11 +104,31 @@ def create(request):
 def details(request, HP_id):
     HP_data = get_object_or_404(HotPlaces, pk = HP_id)
     Review_data = Reviews.objects.filter(place = HP_data)
+    SP_data = SavedPlaces.objects.filter(user = request.user)
+    saved = False
+    for items in SP_data.all():
+        if items.saved == HP_data:
+            saved = True
 
-    return render (request, 'hotplist/details.html', {'HP_data':HP_data, 'Review_data':Review_data})
+    return render (request, 'hotplist/details.html', {'HP_data':HP_data, 'Review_data':Review_data, 'SP_data':SP_data, 'saved':saved})
+
+
+def save(request, HP_id):
+    HP_data = get_object_or_404(HotPlaces, pk = HP_id)
+    JJim = SavedPlaces.objects.create(user = request.user, saved = HP_data)
+    return redirect("hotplist:details", HP_id = HP_id)
+
+
+def save_delete(request, HP_id):
+    HP_data = get_object_or_404(HotPlaces, pk = HP_id )
+    JJim_data = get_object_or_404(SavedPlaces, user =request.user, saved = HP_data)
+
+    JJim_data.delete()
+    return redirect("hotplist:profile")
 
 
 
+@login_required(login_url= 'hotplist:login')
 def comment_create(request,HP_id):
     HP = get_object_or_404(HotPlaces, pk = HP_id)
     if request.method == "POST":
@@ -81,19 +149,36 @@ def comment_create(request,HP_id):
         return render (request, 'hotplist/comment_create.html',{'HP': HP, 'form':form} )
     
 
+def comment_delete(request, Review_id):
+    data = get_object_or_404(Reviews, pk = Review_id)
+    data.delete()
+    return redirect('hotplist:details', HP_id = data.place.id)
 
-    def signup(request):
-        if request.method == "POST":
-            form = UserForm(request.POST)
-            if form.is_valid():
-                form.save()
-                raw_username = form.cleaned_data.get('username')
-                raw_password = form.cleaned_data.get('password')
-                user = authenticate(username = raw_username, password = raw_password)
+
+
+def comment_edit(request, Review_id):
+    data = get_object_or_404(Reviews, pk = Review_id)
+    if request.method == "POST":
+        form = ReviewForm(request.POST, instance = data)
+        if form.is_valid():
+            edit = form.save(commit = False)
+            edit.pub_date = timezone.now()
+            edit.save()
+            return redirect("hotplist:details", HP_id = data.place.id)
+        else:
+            form = ReviewForm(instance=data)
+            return render(request, 'hotplist/comment_create.html',{"form":form})
+    else:
+        form = ReviewForm(instance= data)
+        return render(request,'hotplist/comment_create.html', {'form':form})
+
+
+
+
+
+
+ 
                 
-    @login_required(LOGIN_URL = 'hotplist/login')
-    def comment_update(request, HP_id):
-        return HttpResponse("Hello")
 
 
 
