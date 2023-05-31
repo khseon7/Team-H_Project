@@ -12,7 +12,7 @@ from .forms import ReviewForm
 
 # Create your views here.
 def index(request):
-    return render(request, 'hotplist/index.html')
+    return render(request, 'hotplist/detail.html')
 
 @login_required(login_url = 'hotplist:login')
 def review_create(request):
@@ -39,9 +39,21 @@ def review_delete(request, item_id):
 
 @login_required(login_url = "hotplist:login")
 def review_modify(request, item_id):
-    data = get_object_or_404(Review, pk = item_id)
-    data.delete()
-    return render(request, 'hotplist/detail.html')
+    data = get_object_or_404(ReviewForm, pk = item_id)
+    if request.method == "POST":
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            modify = form.save(commit = False)
+            modify.grade = form.save()
+            modify.pub_date = timezone.now()
+            modify.author = request.user
+            modify.save()
+            return redirect('hotplist:create')
+        else:
+            return render(request, 'hotplist/detail.html', {'form':form})
+    else:
+        form = ReviewForm()
+        return render(request, 'hotplist/detail.html', {'form':form})
 
 # - 로그인 - 진용
 # - 맛집등록 - 주호(팀장)

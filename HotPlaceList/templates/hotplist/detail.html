@@ -8,7 +8,11 @@
     <br>
     <textarea name = "content" rows = "5">{{form.content.value | default_if_none:""}} </textarea>
     <br>
-    <input type = "submit" value = "올리기">
+    평점
+    <br>
+    <input name="grade">
+    <br>
+    <input type = "submit" value = "저장">
 </form>
 
 {% for review in reviews %}

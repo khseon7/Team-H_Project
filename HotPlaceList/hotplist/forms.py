@@ -14,7 +14,7 @@ REVIEW_POINT_CHOICES = (
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields=('comment', 'grade', 'store', 'pub_date', 'author')
-        widgets = {
-            'grade': forms.Select(choices=REVIEW_POINT_CHOICES)
-        }
+        fields=('comment', 'grade', 'pub_date', 'author')
+        # widgets = {
+        #     'grade': forms.Select(choices=REVIEW_POINT_CHOICES)
+        # }
