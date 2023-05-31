@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Techer H-Team 맛집 디테일</h1>
+
+<form method = "POST">
+    {% csrf_token %}
+    댓글 달기
+    <br>
+    <textarea name = "content" rows = "5">{{form.content.value | default_if_none:""}} </textarea>
+    <br>
+    <input type = "submit" value = "올리기">
+</form>
+
+{% for review in reviews %}
+    <div class="content">
+        <div class="content_grade"><b>{{ review.grade }}</b>점
+
+        </div>
+        <div class="content_comment">
+            <p class="card-text">{{ review.comment }}</p>
+        </div>
+    </div>
+{% endfor %}
+
+{%endblock%}
