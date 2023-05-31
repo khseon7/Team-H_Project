@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .forms import HPForm,ReviewForm
+from .forms import HPForm,ReviewForm,UserForm
 from django.contrib import messages
 from .models import HotPlaces, Reviews, SavedPlaces
 from django.http import HttpResponse
 from django.utils import timezone
+
 
 
 # Create your views here.
@@ -78,6 +79,22 @@ def comment_create(request,HP_id):
     else:
         form = ReviewForm()
         return render (request, 'hotplist/comment_create.html',{'HP': HP, 'form':form} )
+    
+
+
+    def signup(request):
+        if request.method == "POST":
+            form = UserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                raw_username = form.cleaned_data.get('username')
+                raw_password = form.cleaned_data.get('password')
+                user = authenticate(username = raw_username, password = raw_password)
+                
+    @login_required(LOGIN_URL = 'hotplist/login')
+    def comment_update(request, HP_id):
+        return HttpResponse("Hello")
+
 
 
 
