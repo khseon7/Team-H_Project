@@ -7,7 +7,7 @@
 <p>{{HP_data.phone_num}}</p>
 
 {% if user.is_authenticated%}
-{% if saved%}
+{% if saved %}
 <a href="{% url 'hotplist:comment_create' HP_data.id %}">
     <button>댓글 작성하기</button>
 </a>

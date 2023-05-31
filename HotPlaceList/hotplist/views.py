@@ -19,7 +19,7 @@ def signup(request):
                 form.save()
                 raw_username = form.cleaned_data.get('username')
                 raw_password = form.cleaned_data.get('password1')
-                user = authenticate(request, username = raw_username, password = raw_password)
+                user = authenticate( username = raw_username, password = raw_password)
                 if user is not None:
                     auth_login(request,user)
                     return redirect("hotplist:index")
@@ -31,7 +31,8 @@ def signup(request):
         else:
             form = UserForm()
             return render(request, 'hotplist/signup.html',{'form':form})
-        
+
+
 def login(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -104,13 +105,16 @@ def create(request):
 def details(request, HP_id):
     HP_data = get_object_or_404(HotPlaces, pk = HP_id)
     Review_data = Reviews.objects.filter(place = HP_data)
-    SP_data = SavedPlaces.objects.filter(user = request.user)
-    saved = False
-    for items in SP_data.all():
-        if items.saved == HP_data:
-            saved = True
+    if request.user.is_authenticated:
+        SP_data = SavedPlaces.objects.filter(user = request.user)
+        saved = False
+        for items in SP_data.all():
+            if items.saved == HP_data:
+                saved = True
 
-    return render (request, 'hotplist/details.html', {'HP_data':HP_data, 'Review_data':Review_data, 'SP_data':SP_data, 'saved':saved})
+        return render (request, 'hotplist/details.html', {'HP_data':HP_data, 'Review_data':Review_data, 'SP_data':SP_data, 'saved':saved})
+    else:
+        return render(request, 'hotplist/details.html', {'HP_data':HP_data, 'Review_data':Review_data})
 
 
 def save(request, HP_id):
@@ -164,6 +168,7 @@ def comment_edit(request, Review_id):
             edit = form.save(commit = False)
             edit.pub_date = timezone.now()
             edit.save()
+            update_rating(data.place.id)
             return redirect("hotplist:details", HP_id = data.place.id)
         else:
             form = ReviewForm(instance=data)
