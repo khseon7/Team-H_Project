@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Techer H-Team 맛집게시판</h1>
-<a href="{% url 'hotplist:signin' %}">로그인</a>
+<div>
+    <form method = "GET" action = "{% url 'hotplist:login' %}">
+    <input type ="submit" Value = '로그인'>
+</form>
 <a href="{% url 'hotplist:signup' %}">회원가입</a>
 {%endblock%}

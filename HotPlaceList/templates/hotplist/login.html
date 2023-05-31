@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <h1>로그인</h1>
+     
+    <form method = "POST" action = "{% url 'hotplist:login' %}">
+        {%csrf_token%}
+        Username:
+        <br>
+        <input name = "username" type = "text">
+        <br>
+        Password:
+        <br>
+        <input name = "password" type = "password">
+        <br><br>
+        <input type = "submit" value = "로그인">
+    </form>
+{% endblock %}
