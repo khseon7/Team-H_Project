@@ -106,11 +106,12 @@ def details(request, HP_id):
     HP_data = get_object_or_404(HotPlaces, pk = HP_id)
     Review_data = Reviews.objects.filter(place = HP_data)
     if request.user.is_authenticated:
-        SP_data = SavedPlaces.objects.filter(user = request.user)
+        #returns queryset of values of single attribute('saved') in SavedPlaces table
+        SP_data = SavedPlaces.objects.filter(user = request.user).values_list('saved', flat=True) 
+        print(SP_data)
         saved = False
-        for items in SP_data.all():
-            if items.saved == HP_data:
-                saved = True
+        if HP_data.id in SP_data:
+            saved = True
 
         return render (request, 'hotplist/details.html', {'HP_data':HP_data, 'Review_data':Review_data, 'SP_data':SP_data, 'saved':saved})
     else:
