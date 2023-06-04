@@ -1,0 +1,8 @@
+version: "3"
+services:
+  python:
+    container_name: "Django_and_Pillow"
+    build: .
+    
+      
+ 
