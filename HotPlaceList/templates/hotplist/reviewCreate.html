@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form method = "POST">
+    {% csrf_token %}
+    댓글 달기
+    <br>
+    <textarea name = "content" rows = "5">{{form.content.value | default_if_none:""}} </textarea>
+    <br>
+    평점
+    <br>
+    <input name="rating">
+    <br>
+    <input type = "submit" value = "저장">
+</form>
+{%endblock%}

@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import HotPlaces, Review
 
-# Register your models here.
+
+admin.site.register(HotPlaces)
+admin.site.register(Review)

@@ -1,29 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Techer H-Team 맛집 디테일</h1>
+<p>{{HP_data.name}}</p>
+<p>{{HP_data.rating}}</p>
+<p>{{HP_data.address}}</p>
+<p>{{HP_data.phone_num}}</p>
 
-<form method = "POST">
-    {% csrf_token %}
-    댓글 달기
-    <br>
-    <textarea name = "content" rows = "5">{{form.content.value | default_if_none:""}} </textarea>
-    <br>
-    평점
-    <br>
-    <input name="grade">
-    <br>
-    <input type = "submit" value = "저장">
-</form>
+{% if user.is_authenticated%}
+<a href="{% url 'hotplist:review_create' HP_data.id %}">
+    <button>댓글 작성하기</button>
+</a>
+{% endif %}
 
-{% for review in reviews %}
-    <div class="content">
-        <div class="content_grade"><b>{{ review.grade }}</b>점
+{% for items in Review_data.all%}
+<li> 
+    {{items.comment}}
+    {{items.rating}}
+    {{items.pub_date}}
+    {{items.author}}
 
-        </div>
-        <div class="content_comment">
-            <p class="card-text">{{ review.comment }}</p>
-        </div>
-    </div>
+    {% if request.user == items.author%}
+    <a href = "{% url 'hotplist:review_modify' items.id %}">
+        <button> 수정</button>
+    </a>
+    <a href = "{% url 'hotplist:review_delete' items.id %}">
+        <button> 삭제 </button>
+    </a>
+    {% endif %}
+</li>
 {% endfor %}
-
-{%endblock%}
+{% endblock %}

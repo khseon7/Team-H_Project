@@ -1,0 +1,10 @@
+{% extends 'base.html'%}
+{% block content%}
+<h1>맛집 추가하기</h1>
+<form method="POST" action="{%url 'hotplist:create'%}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    {{form.errors}}
+    <button type = "submit">추가하기</button>
+</form>
+{% endblock%}
