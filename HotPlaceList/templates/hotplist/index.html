@@ -16,14 +16,10 @@
 <a href = "{% url 'hotplist:login' %}">
     <button>로그인</button>
 </a>
+<br>
 <a href = "{% url 'hotplist:signup' %}">
     <button>회원가입</button>
 </a>
 {% endif %}
 
-{%for items in list%}
-<li>
-    <a href = "{% url 'hotplist:details' items.id%}"> {{items.name}} {{items.rating}}</a>
-</li>
-{% endfor %}
 {%endblock%}

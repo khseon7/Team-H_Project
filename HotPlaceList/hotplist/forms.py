@@ -17,4 +17,4 @@ class PlaceForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields=('comment', 'grade', 'pub_date', 'author', 'store')
+        fields=('comment', 'rating', 'pub_date', 'author', 'store')
