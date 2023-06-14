@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Techer H-Team 맛집게시판</h1>
+{% for items in list %}
+<li>    <p>{{items.placename}} {{items.rating}}</p> </li>
+{% endfor %}
 
 <div>
     <form method = "GET" action = "{% url 'hotplist:login' %}">

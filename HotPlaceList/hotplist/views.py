@@ -8,8 +8,8 @@ from django.contrib.auth import logout as auth_logout
 
 # Create your views here.
 def index(request):
-    hotplace=HotPlaces.objects.all()
-    return render(request, 'hotplist/index.html',{'hotplace':hotplace})    
+    data=HotPlaces.objects.all()
+    return render(request, 'hotplist/index.html',{'list':data})
 
 def signup(request):
     if request.method == "POST":
