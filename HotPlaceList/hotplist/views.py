@@ -2,13 +2,14 @@ from django.contrib.auth import authenticate
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import UserForm
-from .models import HotPlaces,Review
+from .models import HotPlaces,Review,WantList
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 
 # Create your views here.
 def index(request):
-    return render(request, 'hotplist/index.html')    
+    hotplace=HotPlaces.objects.all()
+    return render(request, 'hotplist/index.html',{'hotplace':hotplace})    
 
 def signup(request):
     if request.method == "POST":
