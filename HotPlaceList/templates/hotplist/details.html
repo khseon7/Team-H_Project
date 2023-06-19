@@ -5,6 +5,12 @@
 <p>{{HP_data.rating}}</p>
 <p>{{HP_data.address}}</p>
 <p>{{HP_data.phone_num}}</p>
+{% if user.is_authenticated %}
+<p>작성자: <a href = "{% url 'hotplist:profile' HP_data.author.id%}">{{HP_data.author}}</a> </p>
+{% else %}
+<p>작성자: {{HP_data.author}}</p>
+{% endif %}
+
 
 {% if user.is_authenticated%}
 {% if saved %}

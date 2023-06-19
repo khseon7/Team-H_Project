@@ -14,8 +14,8 @@ urlpatterns = [
     path('signup/',views.signup, name = 'signup'),
     path('logout/',views.logout, name = 'logout'),
     path('login/',views.login, name = "login"),
-    path('profile/', views.profile, name='profile'),
-    path('save/<int:HP_id>',views.save, name = "save"),
-    path('save/delete/<int:HP_id>',views.save_delete, name = 'save_delete'),
+    path('profile/<int:HP_author>/', views.profile, name='profile'),
+    path('save/<int:HP_id>/',views.save, name = "save"),
+    path('save/delete/<int:HP_id>/',views.save_delete, name = 'save_delete'),
     
 ]

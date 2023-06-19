@@ -4,7 +4,7 @@
 {% if user.is_authenticated%}
 <h3>Welcome, {{user.username}}</h3>
 <br>
-<a href = "{% url 'hotplist:profile' %}">
+<a href = "{% url 'hotplist:profile' user.id %}">
     <button> 내 프로필 </button>
 </a>
 <a href = "{% url 'hotplist:logout' %}">

@@ -9,6 +9,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.contrib.auth.models import User
 
 
 
@@ -53,10 +54,18 @@ def logout(request):
     return redirect("hotplist:index")
 
 
-def profile(request):
-    SP_data = SavedPlaces.objects.filter(user = request.user)
-    Review_data = Reviews.objects.filter(author = request.user)
-    return render(request, 'hotplist/profile.html', {'SP_data':SP_data, 'Review_data':Review_data})
+def profile(request, HP_author):
+    if request.user != HP_author:
+        SP_data = SavedPlaces.objects.filter(user = HP_author)
+        Review_data = Reviews.objects.filter(author = HP_author)
+        profile_name = get_object_or_404(User,pk = HP_author)
+        return render(request, 'hotplist/profile.html', {'SP_data':SP_data, 'Review_data':Review_data, 'user':profile_name})
+    else: 
+        SP_data = SavedPlaces.objects.filter(user = request.user)
+        Review_data = Reviews.objects.filter(author = request.user)
+        profile_name = get_object_or_404(User,pk = HP_author)
+        return render(request, 'hotplist/profile.html', {'SP_data':SP_data, 'Review_data':Review_data,'user':profile_name})
+
 
 ##첫 페이지, 맛집 리스트를 화면에 띄움
 def index(request):
@@ -95,6 +104,7 @@ def create(request):
         if form.is_valid():
             data = form.save(commit = False)
             data.original_rating = data.rating
+            data.author = request.user
             form.save()
             return redirect('hotplist:index')
         else:
@@ -135,7 +145,7 @@ def save_delete(request, HP_id):
     JJim_data = get_object_or_404(SavedPlaces, user =request.user, saved = HP_data)
 
     JJim_data.delete()
-    return redirect("hotplist:profile")
+    return redirect("hotplist:profile", HP_author = request.user.id )
 
 
 
