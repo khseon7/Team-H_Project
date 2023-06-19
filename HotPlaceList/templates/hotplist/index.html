@@ -30,4 +30,32 @@
 </li>
 {% endfor %}
 
+<!-- 페이징처리 -->
+<ul>
+    {% if list.has_previous %}
+    <a href="?page={{list.previous_page_number}}">이전</a>
+    {% endif %}
+
+    {% for page_number in list.paginator.page_range%}
+    {% if page_number >= list.number|add:-5 and page_number <= list.number|add:5 %}
+    {% if page_number == list.number%}
+    <li>
+    <a href = "?page={{page_number}}">{{page_number}}</a>
+    </li>
+    {% else %}
+    <li>
+        <a href = "?page={{page_number}}">{{page_number}}</a>
+    </li>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+
+    {% if list.has_next %}
+    <a href = "?page={{list.next_page_number}}">다음</a>
+    {% endif %}
+</ul>
+
+
+
+
 {%endblock%}

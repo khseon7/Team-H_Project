@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 
 
@@ -59,8 +60,13 @@ def profile(request):
 
 ##첫 페이지, 맛집 리스트를 화면에 띄움
 def index(request):
-    datas = HotPlaces.objects.all()
-    return render(request, 'hotplist/index.html', {'list':datas})
+    # getting page value, with default of '1'
+    page = request.GET.get("page",1)
+    datas = HotPlaces.objects.order_by('-name')
+    paginator = Paginator(datas, 10)
+    page_obj = paginator.get_page(page)
+
+    return render(request, 'hotplist/index.html', {'list':page_obj})
 
 ##평균평점 계산하는 function
 def calculate_rating(HP_id):

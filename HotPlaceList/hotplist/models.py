@@ -18,6 +18,7 @@ class HotPlaces(models.Model):
     original_rating = models.DecimalField(max_digits = 2, decimal_places = 1, validators = [validate_rating], default = 0.0)
     rating = models.DecimalField(max_digits = 2, decimal_places = 1, validators = [validate_rating],default = 0.0)
     image = models.ImageField(upload_to = 'images/')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null = True)
 
 
 class SavedPlaces(models.Model):
