@@ -2,7 +2,7 @@
 {% block content %}
 <div>
     <h1>로그인</h1>
-     
+    
     <form method = "POST" action = "{% url 'hotplist:login' %}">
         {%csrf_token%}
         Username:

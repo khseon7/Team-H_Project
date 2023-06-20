@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import UserForm
 from .models import HotPlaces,Review,WantList
@@ -47,6 +47,6 @@ def logout(request):
     return redirect('hotplist:index')
 
 @login_required
-def detail(request):
-    data=HotPlaces.objects.all()
-    return render(request,'hotplist/detail.html')
+def detail(request,HP_id):
+    HP_data=get_object_or_404(HotPlaces, pk=HP_id)
+    return render(request, 'hotplist/detail.html',{"HP_data":HP_data})
