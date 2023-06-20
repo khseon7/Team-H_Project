@@ -11,7 +11,7 @@ def signup(request):
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
             login(request, new_user)
-            return redirect('index')
+            return redirect('index') #회원가입에서 막힘 
     else:
         form = UserForm()
         return render(request, 'hotplist/user_new.html')
