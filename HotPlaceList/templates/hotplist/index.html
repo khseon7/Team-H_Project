@@ -1,13 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Techer H-Team 맛집게시판</h1>
-{% for items in list %}
-<li>    <p>{{items.placename}} {{items.rating}}</p> </li>
-{% endfor %}
-
+{% if user.is_authenticated %}
+<div>
+    <p><a href="{% url 'hotplist:logout' %}"><button>로그아웃</button></a>
+</div>
+{% else %}
 <div>
     <form method = "GET" action = "{% url 'hotplist:login' %}">
-    <input type ="submit" Value = '로그인'>
-</form>
-<a href="{% url 'hotplist:signup' %}">회원가입</a>
+        <input type ="submit" Value = '로그인'></form>
+        <a href="{% url 'hotplist:signup' %}">회원가입</a>
+</div>
+{% endif %}
+
+{% for items in list %}
+<ol>
+    <p>{{items.placename}} {{items.rating}}</p>
+</ol>
+{% endfor %}
 {%endblock%}
+

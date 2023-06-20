@@ -35,14 +35,18 @@ def login(request):
         user = authenticate(request, username = username, password = password)
         if user is not None:
             auth_login(request, user)
-            return redirect('hotplist:detail')
+            return redirect('hotplist:index')
         else:
             return redirect('hotplist:login')
         
     else:
         return render(request, 'hotplist/login.html')
 
+def logout(request):
+    auth_logout(request)
+    return redirect('hotplist:index')
+
 @login_required
 def detail(request):
-    data=HotPlaces.object.all()
-    
+    data=HotPlaces.objects.all()
+    return render(request,'hotplist/detail.html')
