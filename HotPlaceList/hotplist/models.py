@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.conf import settings
+
 
 def validate_rating(value):
     if value > 5.0 or value < 0.0:
@@ -15,7 +17,7 @@ class HotPlaces(models.Model):
     original_rating = models.DecimalField(max_digits = 2, decimal_places = 1, validators = [validate_rating], default = 0.0)
     rating = models.DecimalField(max_digits = 2, decimal_places = 1, validators = [validate_rating],default = 0.0)
     image = models.ImageField(upload_to = 'images/')
-    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL,related_name='like_articles')
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_hotplaces')
 
 class Review(models.Model):
     comment = models.CharField(max_length=200)

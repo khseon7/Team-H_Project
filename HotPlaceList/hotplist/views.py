@@ -7,8 +7,10 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from . import models
-from .models import Review, User, HotPlaces, SavedPlaces
+from .models import Review, User, HotPlaces
 from .forms import ReviewForm, UserForm, PlaceForm
+from django.http import JsonResponse
+
 
 def index(request):
     placeList = HotPlaces.objects.all()
@@ -32,24 +34,24 @@ def create(request):
     
 def like(request, HP_id):
     HP_data = get_object_or_404(HotPlaces, pk = HP_id)
-    if request.user.is_authenticated:
-
-        if HP_data.like_users.filter(pk=request.user.pk).exists():
-            article.like_users.remove(request.user)
-        else:
-            article.like_users.add(request.user)
-        return redirect('articles:index')
-    return redirect('accouts:login')
+    user = request.user
+    if user in HP_data.like_users.all():
+        HP_data.like_users.remove(user)
+        liked = False
+    else:
+        HP_data.like_users.add(user)
+        liked = True
+    return JsonResponse({'liked': liked, 'like_count': HP_data.like_users.count()})
     
 def detail(request, HP_id):
     HP_data = get_object_or_404(HotPlaces, pk = HP_id) #pk에 가져온 HP_id를 저장, 해당 pk의 HotPlaces객체의 존재 여부를 따짐
     Review_data = Review.objects.filter(store = HP_data) #HotPlaces객체 값을 store에 저장하고 해당 store의 Review객체를 필터링하여 Review_data에 저장
     if request.user.is_authenticated:
-        SP_data = SavedPlaces.objects.filter(user = request.user).values_list('saved', flat=True)
-        saved = False
-        if HP_data.id in SP_data:
-            saved = True
-        return render (request, 'hotplist/detail.html', {'HP_data':HP_data, 'Review_data':Review_data, 'SP_data':SP_data, 'saved':saved})
+        # # SP_data = SavedPlaces.objects.filter(user = request.user).values_list('saved', flat=True)
+        # saved = False
+        # if HP_data.id in SP_data:
+        #     saved = True
+        return render (request, 'hotplist/detail.html', {'HP_data':HP_data, 'Review_data':Review_data })
     else:
         return render(request, 'hotplist/detail.html', {'HP_data':HP_data, 'Review_data':Review_data})
 
@@ -135,7 +137,6 @@ def logout(request):
 # - 댓글생성 (평점,작성자,시간 — 가시성(o),수정, 삭제는 작성자만) - 은혜
 # - 프로필 정보(찜, 리뷰 리스트)- 선우
 
-# -로그인은 선택적으로 하지만 로그인 안하면 내 프로필 확인 불가, 찜하기 불가하고 오직 게시물 보기만 가능하다.
-# -평점 기능에서 위젯 사용해보기
-# -게시글 수정,삭제는 해당 게시글 작성한 유저만 가능하게 만들기
+# - 로그인은 선택적으로 하지만 로그인 안하면 내 프로필 확인 불가, 찜하기 불가하고 오직 게시물 보기만 가능하다.
+# - 게시글 수정,삭제는 해당 게시글 작성한 유저만 가능하게 만들기
 # - 로그인후 찜한 맛집디테일 페이지에서 찜하기 버튼가리기!

@@ -2,8 +2,8 @@
 {% block content %}
 <h1>{{HP_data.name}}</h1>
 
-{% if user.is_authenticated%}
-    {% if saved %}
+{% if request.user.is_authenticated %}
+    {% if liked %}
     <a href="{% url 'hotplist:like_delete' HP_data.id %}">
         <input type="submit" value='찜하기 취소'>
     </a>
