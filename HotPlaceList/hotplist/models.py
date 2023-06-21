@@ -18,6 +18,9 @@ class HotPlaces(models.Model):
     rating = models.DecimalField(max_digits = 2, decimal_places = 1, validators = [validate_rating],default = 0.0)
     image = models.ImageField(upload_to = 'images/')
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_hotplaces')
+    
+    def __str__(self):
+        return self.name
 
 class Review(models.Model):
     comment = models.CharField(max_length=200)
