@@ -29,7 +29,18 @@ def create(request):
     else:
         form = PlaceForm()
         return render(request, 'hotplist/create.html',{'form':form})
+    
+def like(request, HP_id):
+    HP_data = get_object_or_404(HotPlaces, pk = HP_id)
+    if request.user.is_authenticated:
 
+        if HP_data.like_users.filter(pk=request.user.pk).exists():
+            article.like_users.remove(request.user)
+        else:
+            article.like_users.add(request.user)
+        return redirect('articles:index')
+    return redirect('accouts:login')
+    
 def detail(request, HP_id):
     HP_data = get_object_or_404(HotPlaces, pk = HP_id) #pk에 가져온 HP_id를 저장, 해당 pk의 HotPlaces객체의 존재 여부를 따짐
     Review_data = Review.objects.filter(store = HP_data) #HotPlaces객체 값을 store에 저장하고 해당 store의 Review객체를 필터링하여 Review_data에 저장
@@ -61,7 +72,7 @@ def review_create(request, HP_id):
         return render(request, 'hotplist/reviewCreate.html', {'form':form})
 
 @login_required(login_url = "hotplist:login")
-def review_delete(item_id):
+def review_delete(request, item_id):
     data = get_object_or_404(Review, pk = item_id)
     data.delete()
     return redirect('hotplist:detail', HP_id = data.store.id)
@@ -71,7 +82,7 @@ def review_modify(request, item_id):
     data = get_object_or_404(Review, pk = item_id)
     a = get_object_or_404(HotPlaces, pk = data.store.id)
     if request.method == "POST":
-        form = ReviewForm(request.POST)
+        form = ReviewForm(request.POST, instance=data)
         if form.is_valid():
             modify = form.save(commit = False)
             modify.author = request.user

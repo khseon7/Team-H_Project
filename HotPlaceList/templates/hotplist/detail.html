@@ -1,6 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>{{HP_data.name}}</h1>
+
+{% if user.is_authenticated%}
+    {% if saved %}
+    <a href="{% url 'hotplist:like_delete' HP_data.id %}">
+        <input type="submit" value='찜하기 취소'>
+    </a>
+    {% else %}
+    <a href="{% url 'hotplist:like' HP_data.id %}">
+        <input type="submit" value='찜하기'>
+    </a>    
+    {% endif %}
+{% endif %}
+
 <p>평점  : {{HP_data.rating}}</p>
 <p>주소  : {{HP_data.address}}</p>
 <p>전화번호 : {{HP_data.phone_num}}</p>
