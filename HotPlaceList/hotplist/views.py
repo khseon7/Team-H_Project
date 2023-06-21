@@ -53,27 +53,30 @@ def review_create(request, HP_id):
             content.author = request.user
             content.store = a
             content.save()
-            return redirect('hotplist:review_create', HP_id = a.id)
+            return redirect('hotplist:index')
         else:
-            return redirect('hotplist:review_create')
+            return render(request, 'hotplist/reviewCreate.html', {'form':form})
     else:
         form = ReviewForm()
         return render(request, 'hotplist/reviewCreate.html', {'form':form})
 
 @login_required(login_url = "hotplist:login")
-def review_delete(request, item_id):
+def review_delete(item_id):
     data = get_object_or_404(Review, pk = item_id)
     data.delete()
-    return redirect('hotplist:details', HP_id = data.store.id)
+    return redirect('hotplist:detail', HP_id = data.store.id)
 
 @login_required(login_url = "hotplist:login")
 def review_modify(request, item_id):
     data = get_object_or_404(Review, pk = item_id)
+    a = get_object_or_404(HotPlaces, pk = data.store.id)
     if request.method == "POST":
         form = ReviewForm(request.POST)
         if form.is_valid():
             modify = form.save(commit = False)
+            modify.author = request.user
             modify.pub_date = timezone.now()
+            modify.store = a
             modify.save()
             return redirect("hotplist:detail", HP_id = data.store.id)
         else:

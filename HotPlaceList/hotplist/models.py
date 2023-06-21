@@ -23,6 +23,6 @@ class SavedPlaces(models.Model):
 class Review(models.Model):
     comment = models.CharField(max_length=200)
     rating = models.DecimalField(max_digits=2, decimal_places=1)
-    store = models.ForeignKey(HotPlaces, on_delete = models.CASCADE)
+    store = models.ForeignKey(HotPlaces, on_delete = models.CASCADE, null = False)
     pub_date = models.DateTimeField()
     author = models.ForeignKey(User, on_delete = models.CASCADE, default = '')

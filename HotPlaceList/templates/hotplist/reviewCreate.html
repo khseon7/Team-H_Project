@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<form method = "POST">
+<h1>댓글 추가, 수정</h1>
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     댓글 달기
     <br>
-    <textarea name = "content" rows = "5">{{form.content.value | default_if_none:""}} </textarea>
+    <textarea name = "comment" rows = "5" col = 15></textarea>
     <br>
     평점
     <br>
     <input name="rating">
     <br>
     <input type = "submit" value = "저장">
+    {{form.errors}}
 </form>
 {%endblock%}

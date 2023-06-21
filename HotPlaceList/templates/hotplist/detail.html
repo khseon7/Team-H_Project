@@ -4,6 +4,7 @@
 <p>평점  : {{HP_data.rating}}</p>
 <p>주소  : {{HP_data.address}}</p>
 <p>전화번호 : {{HP_data.phone_num}}</p>
+<img src = "{{HP_data.image.url}}" width="400px" style="border-radius:20px"><br>
 
 {% if user.is_authenticated%}
 <a href="{% url 'hotplist:review_create' HP_data.id %}">
@@ -12,20 +13,20 @@
 {% endif %}
 
 {% for item in Review_data.all%}
-<li> 
-    {{item.comment}}
-    {{item.rating}}
-    {{item.pub_date}}
-    {{item.author}}
+<div style="border: 1px solid black;">
+    <div>{{item.author}}님이 작성한 댓글</div>
+    <div>{{item.comment}}</div>
+    <div>평점 : {{item.rating}}</div>
+    <div>{{item.pub_date}}</div>
 
     {% if request.user == item.author%}
     <a href = "{% url 'hotplist:review_modify' item.id %}">
-        <button> 수정</button>
+        <button>수정</button>
     </a>
     <a href = "{% url 'hotplist:review_delete' item.id %}">
-        <button> 삭제 </button>
+        <button>삭제</button>
     </a>
     {% endif %}
-</li>
+</div>
 {% endfor %}
 {% endblock %}
