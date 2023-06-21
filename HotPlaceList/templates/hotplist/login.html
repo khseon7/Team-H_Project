@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>로그인</h1>
+<h1>로그인 페이지</h1>
 <form method = "POST" action = "{% url 'hotplist:login' %}">
     {%csrf_token%}
     아이디:

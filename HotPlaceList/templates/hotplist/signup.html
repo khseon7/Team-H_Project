@@ -1,17 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
+<h1>회원가입 페이지</h1>
 <form method = "POST" action = "{% url 'hotplist:signup' %}">
     {% csrf_token %}
     {{form.as_p}}
     {{form.errors}}
-    <!-- 아이디:
-    <br>
-    <input name = "username" type = "text">
-    <br>
-    비밀번호:
-    <br>
-    <input name = "password1" type = "password">
-    <br> -->
     <input type = "submit" value = "회원가입">
 </form>
 {% endblock %}
