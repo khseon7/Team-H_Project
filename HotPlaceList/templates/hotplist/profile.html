@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{% block content%}
+<h1>{{user.username}} 님의 프로필</h1>
+
+<h2>찜 리스트</h2>
+{% for item in liked_HP_data.all%}
+<p>{{item.name}}</p>
+{% endfor %}
+
+<h2>리뷰 리스트</h2>
+{% for item in user_reviews.all%}
+<div style="border: 1px solid black;">
+    <div>{{item.store}}</div>
+    <div>{{item.author}}님이 작성한 댓글</div>
+    <div>{{item.comment}}</div>
+    <div>평점 : {{item.rating}}</div>
+    <div>{{item.pub_date}}</div>
+</div>
+{% endfor %}
+
+{% endblock%}

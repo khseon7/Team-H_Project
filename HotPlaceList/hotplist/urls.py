@@ -15,5 +15,5 @@ urlpatterns = [
     path('logout/',views.logout, name = 'logout'),
     path('login/',views.login, name = "login"),
     path('like/<int:HP_id>/',views.like, name = "like"),
-    # path('like/delete/<int:HP_id>/',views.like_delete, name = 'like_delete'),
+    path('profile/',views.profile, name = "profile"),
 ]

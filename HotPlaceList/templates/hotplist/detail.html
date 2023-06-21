@@ -16,13 +16,14 @@
 <p>평점  : {{HP_data.rating}}</p>
 <p>주소  : {{HP_data.address}}</p>
 <p>전화번호 : {{HP_data.phone_num}}</p>
-<img src = "{{HP_data.image.url}}" width="400px" style="border-radius:20px"><br>
+<img src = "{{HP_data.image.url}}" width="400px" style="border-radius:20px"><h1></h1>
 
 {% if user.is_authenticated%}
 <a href="{% url 'hotplist:review_create' HP_data.id %}">
     <button>댓글 작성하기</button>
-</a><br>
+</a>
 {% endif %}
+<h1></h1>
 
 {% for item in Review_data.all%}
 <div style="border: 1px solid black;">

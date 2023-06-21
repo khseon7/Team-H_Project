@@ -126,10 +126,12 @@ def logout(request):
     auth_logout(request)
     return redirect("hotplist:index")
 
-
-
+def profile(request):
+    user = request.user
+    liked_HP_data = HotPlaces.objects.filter(like_users=user)
+    user_reviews = Review.objects.filter(author=user)
+    return render(request, 'hotplist/profile.html', {'liked_HP_data': liked_HP_data, 'user_reviews':user_reviews})
 
 # - 프로필 정보(찜, 리뷰 리스트)
 # - 로그인은 선택적으로 하지만 로그인 안하면 내 프로필 확인 불가, 찜하기 불가하고 오직 게시물 보기만 가능하다.
 # - 게시글 수정,삭제는 해당 게시글 작성한 유저만 가능하게 만들기
-# - 로그인후 찜한 맛집디테일 페이지에서 찜하기 버튼가리기!
