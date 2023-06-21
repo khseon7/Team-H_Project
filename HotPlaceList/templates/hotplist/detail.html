@@ -3,15 +3,14 @@
 <h1>{{HP_data.name}}</h1>
 
 {% if request.user.is_authenticated %}
+<form method="POST" action="{% url 'hotplist:like' HP_data.id %}">
+    {% csrf_token %}
     {% if liked %}
-    <a href="{% url 'hotplist:like_delete' HP_data.id %}">
-        <input type="submit" value='찜하기 취소'>
-    </a>
+        <input type="submit" value="찜하기 취소">
     {% else %}
-    <a href="{% url 'hotplist:like' HP_data.id %}">
-        <input type="submit" value='찜하기'>
-    </a>    
+        <input type="submit" value="찜하기">
     {% endif %}
+</form>>
 {% endif %}
 
 <p>평점  : {{HP_data.rating}}</p>
@@ -22,7 +21,7 @@
 {% if user.is_authenticated%}
 <a href="{% url 'hotplist:review_create' HP_data.id %}">
     <button>댓글 작성하기</button>
-</a>
+</a><br>
 {% endif %}
 
 {% for item in Review_data.all%}
