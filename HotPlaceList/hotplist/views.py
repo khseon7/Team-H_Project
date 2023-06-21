@@ -46,7 +46,7 @@ def logout(request):
     auth_logout(request)
     return redirect('hotplist:index')
 
-@login_required
 def detail(request,HP_id):
     HP_data=get_object_or_404(HotPlaces, pk=HP_id)
-    return render(request, 'hotplist/detail.html',{"HP_data":HP_data})
+    Review_data=Review.object.filter(Review, place=HP_data)
+    return render(request, 'hotplist/detail.html',{"HP_data":HP_data,"Review_data":Review_data})

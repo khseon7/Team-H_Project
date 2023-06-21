@@ -5,6 +5,13 @@
 <p>Address : {{HP_data.address}}</p>
 <p>Phone : {{HP_data.phone}}</p>
 <p>Rating : {{HP_data.rating}}</p>
-
-
+<p>
+<p>리뷰</p>
+{% for review in Review_data%}
+<li>
+    <p> Author : {{review.author}}</p>
+    <p> Content : {{review.content}}</p>
+    <p> Rating : {{review.rating}}</p>
+    <p> Date : {{review.date}}</p>
+</li>
 {%endblock%}
