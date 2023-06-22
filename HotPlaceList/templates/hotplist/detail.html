@@ -5,13 +5,17 @@
 <p>Address : {{HP_data.address}}</p>
 <p>Phone : {{HP_data.phone}}</p>
 <p>Rating : {{HP_data.rating}}</p>
-<p>
-<p>리뷰</p>
+{% if user.is_authenticated%}
+<p><a href="{% url 'hotplist:new_review' HP_data.id %}"><button>리뷰 추가하기</button></a></p>
+{%endif%}
+<h2>리뷰</h2>
 {% for review in Review_data%}
-<li>
+<ul>
     <p> Author : {{review.author}}</p>
     <p> Content : {{review.content}}</p>
     <p> Rating : {{review.rating}}</p>
     <p> Date : {{review.date}}</p>
-</li>
+</ul>
+<br>
+{%endfor%}
 {%endblock%}

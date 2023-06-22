@@ -1,10 +1,11 @@
 from django.contrib.auth import authenticate
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import UserForm
+from .forms import UserForm,ReviewForm
 from .models import HotPlaces,Review,WantList
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+from django.utils import timezone
 
 # Create your views here.
 def index(request):
@@ -48,5 +49,24 @@ def logout(request):
 
 def detail(request,HP_id):
     HP_data=get_object_or_404(HotPlaces, pk=HP_id)
-    Review_data=Review.object.filter(Review, place=HP_data)
+    Review_data=Review.objects.filter(place=HP_data)
     return render(request, 'hotplist/detail.html',{"HP_data":HP_data,"Review_data":Review_data})
+
+@login_required(login_url='hotplist:login')
+def new_review(request,HP_id):
+    HP=get_object_or_404(HotPlaces,pk=HP_id)
+    if request.method=="POST":
+        form=ReviewForm(request.POST)
+        if form.is_valid():
+            review=form.save(commit=False)
+            review.author=request.user
+            review.place=HP
+            review.date=timezone.now()
+            review.save()
+            return redirect('hotplist:detail',HP_id=HP.id)
+        else:
+            form=ReviewForm(HP_id)
+            return render('hotplist/new_review.html',{'HP':HP,'form':form})
+    else:
+        form=ReviewForm()
+        return render(request,'hotplist/new_review.html',{'HP':HP,'form':form})
