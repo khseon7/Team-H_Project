@@ -20,14 +20,18 @@ def signup(request):
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(request, username=username, password=raw_password)  # 사용자 인증
-            auth_login(request, user)  # 로그인
-            return redirect('hotplist:index')
+            if user is not None:
+                auth_login(request, user)  # 로그인
+                return redirect('hotplist:index')
+            else:
+                return redirect('hotplist:signup')
         
         else:
-            return redirect('hotplist:signup')
+            form = UserForm(request.POST)
+            return render(request, 'hotplist/signup.html', {'form': form})
     else:
-        form = UserForm()
-        return render(request, 'hotplist/signup.html', {'form': form})
+        form=UserForm()
+        return render(request,'hotplist/signup.html',{'form':form})
 
 def login(request):
     if request.method == "POST":
@@ -70,3 +74,24 @@ def new_review(request,HP_id):
     else:
         form=ReviewForm()
         return render(request,'hotplist/new_review.html',{'HP':HP,'form':form})
+
+def edit_review(request,Review_id):
+    Review=get_object_or_404(Review,pk=Review_id)
+    if request.method=='POST':
+        form=ReviewForm(request.POST,instance=Review)
+        if form.is_valid():
+            edit=form.save(commit=False)
+            edit.date=timezone.now()
+            edit.save()
+            return redirect("hotplist:detail",HP_id=Review.place.id)
+        else:
+            form=ReviewForm(instance=Review)
+            return render(request,'hotplist/new_review.html',{'form':form})
+    else:
+        form=ReviewForm(instance=Review)
+        return render(request,'hotplist/new_review.html',{'form':form})
+
+def delete_review(request,Review_id):
+    target=get_object_or_404(Review,pk=Review_id)
+    target.delete()
+    return redirect('hotplist:detail',HP_id=target.place.id)
