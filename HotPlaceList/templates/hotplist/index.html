@@ -3,8 +3,9 @@
 <h1>Techer H-Team 맛집게시판</h1>
 {% if user.is_authenticated %}
 <div>
-    <p><a href="{% url 'hotplist:logout' %}"><button>로그아웃</button></a></p>
-    <p>내 프로필</p>
+    <p><a href="{% url 'hotplist:logout' %}"><button>로그아웃</button></a>
+        <a href="{% url 'hotplist:my_profile' %}"><button>내 프로필</button></a></p>
+
     <p>맛집 추가하기</p>
 </div>
 {% else %}
@@ -15,11 +16,12 @@
     <a href="{% url 'hotplist:signup' %}">회원가입</a>
 </div>
 {% endif %}
-
+<hr>
 {% for items in list %}
-<ol>
+<li style='list-style-type:decimal'>
     <a href = "{% url 'hotplist:detail' items.id%}">{{items.placename}} {{items.rating}}</a>
-</ol>
+</li>
+<hr>
 {% endfor %}
 {%endblock%}
 

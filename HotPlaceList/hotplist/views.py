@@ -102,3 +102,7 @@ def delete_review(request,Review_id):
     target=get_object_or_404(Review,pk=Review_id)
     target.delete()
     return redirect('hotplist:detail',HP_id=target.place.id)
+
+def my_profile(request):
+    review_data=Review.objects.filter(author=request.user)
+    return render(request,'hotplist/my_profile.html',{'review_data':review_data})

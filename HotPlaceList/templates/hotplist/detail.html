@@ -10,6 +10,7 @@
 <p><a href="{% url 'hotplist:new_review' HP_data.id %}"><button>리뷰 추가하기</button></a></p>
 {%endif%}
 <h4>리뷰</h4>
+<hr>
 {% for review in Review_data.all%}
 <ul>
     <p> Author : {{review.author}}</p>
@@ -21,6 +22,6 @@
     <a href="{% url 'hotplist:delete_review' review.id%}"><button>삭제</button></a>
     {% endif %}
 </ul>
-<br>
+<hr>
 {%endfor%}
 {%endblock%}
