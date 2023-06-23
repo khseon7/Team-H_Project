@@ -6,6 +6,7 @@
 <p>Address : {{HP_data.address}}</p>
 <p>Phone : {{HP_data.phone}}</p>
 <p>Rating : {{HP_data.rating}}</p>
+<a href="{% url 'hotplist:delete_place' HP_data.id%}"><button>삭제</button></a>
 {% if user.is_authenticated%}
 <p><a href="{% url 'hotplist:new_review' HP_data.id %}"><button>리뷰 추가하기</button></a></p>
 {%endif%}

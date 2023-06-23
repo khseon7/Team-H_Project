@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import UserForm,ReviewForm
+from .forms import UserForm,ReviewForm,HPForm
 from .models import HotPlaces,Review,WantList
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
@@ -103,6 +103,27 @@ def delete_review(request,Review_id):
     target.delete()
     return redirect('hotplist:detail',HP_id=target.place.id)
 
+def delete_place(request,HP_id):
+    target=get_object_or_404(HotPlaces,pk=HP_id)
+    target.delete()
+    return redirect('hotplist:index')
+
 def my_profile(request):
     review_data=Review.objects.filter(author=request.user)
     return render(request,'hotplist/my_profile.html',{'review_data':review_data})
+
+@login_required(login_url='hotplist:login')
+def new_place(request):
+    if request.method=='POST':
+        form=HPForm(request.POST,request.FILES)
+        if form.is_valid():
+            hotplace=form.save(commit=False)
+            hotplace.origin_rating=hotplace.rating
+            hotplace.save()
+            return redirect('hotplist:index')
+        else:
+            form=HPForm()
+            return render(request,'hotplist/new_place.html',{'form':form})
+    else:
+        form=HPForm()
+        return render(request,'hotplist/new_place.html',{'form':form})

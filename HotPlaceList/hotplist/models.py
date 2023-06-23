@@ -14,7 +14,7 @@ class HotPlaces(models.Model):
     address=models.CharField(max_length=120,null=False)
     phone=models.CharField(max_length=15,null=True,blank=True)
     origin_rating=models.DecimalField(max_digits=2,decimal_places=1,validators=[validate_rating],default=0.0)
-    rating=models.DecimalField(max_digits=2,decimal_places=1,validators=[validate_rating],default=0.0)
+    rating=models.DecimalField(max_digits=2,null=True,decimal_places=1,validators=[validate_rating],default=0.0)
     image=models.ImageField(upload_to='images/')
     
 class WantList(models.Model):

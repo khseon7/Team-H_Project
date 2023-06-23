@@ -5,8 +5,7 @@
 <div>
     <p><a href="{% url 'hotplist:logout' %}"><button>로그아웃</button></a>
         <a href="{% url 'hotplist:my_profile' %}"><button>내 프로필</button></a></p>
-
-    <p>맛집 추가하기</p>
+    <p><a href="{% url 'hotplist:new_place' %}"><button>맛집 추가하기</button></a></p>
 </div>
 {% else %}
 <div>
@@ -19,7 +18,7 @@
 <hr>
 {% for items in list %}
 <li style='list-style-type:decimal'>
-    <a href = "{% url 'hotplist:detail' items.id%}">{{items.placename}} {{items.rating}}</a>
+    <a href = "{% url 'hotplist:detail' items.id%}">{{items.placename}}</a>
 </li>
 <hr>
 {% endfor %}
