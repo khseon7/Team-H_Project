@@ -52,7 +52,7 @@ def logout(request):
     return redirect('hotplist:index')
 
 def eval_rating(HP_data,Review_data):
-    rating=HP_data.rating
+    rating=HP_data.origin_rating
     for data in Review_data:
         rating+=data.rating
     HP_data.rating=rating/(len(Review_data)+1)
