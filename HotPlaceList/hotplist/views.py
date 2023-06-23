@@ -51,9 +51,16 @@ def logout(request):
     auth_logout(request)
     return redirect('hotplist:index')
 
+def eval_rating(HP_data,Review_data):
+    rating=HP_data.rating
+    for data in Review_data:
+        rating+=data.rating
+    HP_data.rating=rating/(len(Review_data)+1)
+    
 def detail(request,HP_id):
     HP_data=get_object_or_404(HotPlaces, pk=HP_id)
     Review_data=Review.objects.filter(place=HP_data)
+    eval_rating(HP_data,Review_data)
     return render(request, 'hotplist/detail.html',{"HP_data":HP_data,"Review_data":Review_data})
 
 @login_required(login_url='hotplist:login')
