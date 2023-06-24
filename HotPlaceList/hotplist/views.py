@@ -116,7 +116,7 @@ def delete_place(request,HP_id):
 
 def my_profile(request):
     review_data=Review.objects.filter(author=request.user)
-    want_data=WantList.objects.filter(user=request.user)
+    want_data=WantList.objects.filter(user=request.user,want_count=1)
     return render(request,'hotplist/my_profile.html',{'review_data':review_data,'want_data':want_data})
 
 @login_required(login_url='hotplist:login')
