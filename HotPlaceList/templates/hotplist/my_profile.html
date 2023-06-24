@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 {% block content%}
 <h1>Hi! {{user.username}}</h1>
+<p>My WantList</p>
+<hr>
+{% for item in want_data%}
+<li style='list-style-type:decimal'>
+<p>{{item.hotplace.placename}}</p>
+</li>
+{% endfor %}
+<br>
 <p>My Reviews</p>
 <hr>
 {% for data in review_data.all%}

@@ -60,8 +60,14 @@ def eval_rating(HP_data,Review_data):
 def detail(request,HP_id):
     HP_data=get_object_or_404(HotPlaces, pk=HP_id)
     Review_data=Review.objects.filter(place=HP_data)
+    if WantList.objects.filter(user=request.user,hotplace=HP_data).exists():
+        Want_data=get_object_or_404(WantList,user=request.user,hotplace=HP_data)
+    else:
+        WantList.objects.create(user=request.user,hotplace=HP_data,want_count=0)
+        Want_data=get_object_or_404(WantList,user=request.user,hotplace=HP_data)
     eval_rating(HP_data,Review_data)
-    return render(request, 'hotplist/detail.html',{"HP_data":HP_data,"Review_data":Review_data})
+    return render(request, 'hotplist/detail.html',{"HP_data":HP_data,"Review_data":Review_data,"Want_data":Want_data})
+
 
 @login_required(login_url='hotplist:login')
 def new_review(request,HP_id):
@@ -110,7 +116,8 @@ def delete_place(request,HP_id):
 
 def my_profile(request):
     review_data=Review.objects.filter(author=request.user)
-    return render(request,'hotplist/my_profile.html',{'review_data':review_data})
+    want_data=WantList.objects.filter(user=request.user)
+    return render(request,'hotplist/my_profile.html',{'review_data':review_data,'want_data':want_data})
 
 @login_required(login_url='hotplist:login')
 def new_place(request):
@@ -127,3 +134,17 @@ def new_place(request):
     else:
         form=HPForm()
         return render(request,'hotplist/new_place.html',{'form':form})
+
+def want_place(request,HP_id):
+    Place_data=get_object_or_404(HotPlaces,pk=HP_id)
+    want_data=WantList.objects.get(user=request.user,hotplace=Place_data)
+    want_data.want_count=1
+    want_data.save()
+    return redirect('hotplist:detail',HP_id=HP_id)
+
+def del_want_place(request,HP_id):
+    Place_data=get_object_or_404(HotPlaces,pk=HP_id)
+    target=WantList.objects.get(user=request.user,hotplace=Place_data)
+    target.want_count=0
+    target.save()
+    return redirect('hotplist:detail',HP_id=HP_id)

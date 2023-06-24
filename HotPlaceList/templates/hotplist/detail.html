@@ -9,8 +9,13 @@
 {% if request.user.is_superuser %}
 <a href="{% url 'hotplist:delete_place' HP_data.id%}"><button>삭제</button></a>
 {%endif%}
-{% if user.is_authenticated%}
+{% if user.is_authenticated %}
 <p><a href="{% url 'hotplist:new_review' HP_data.id %}"><button>리뷰 추가하기</button></a></p>
+{%if request.user == Want_data.user and Want_data.want_count == 1 %}
+<p><a href="{% url 'hotplist:del_want_place' HP_data.id %}"><button>찜하기 취소</button></a></p>
+{% else %}
+<p><a href="{% url 'hotplist:want_place' HP_data.id %}"><button>찜하기</button></a></p>
+{%endif%}
 {%endif%}
 <h4>리뷰</h4>
 <hr>

@@ -20,6 +20,7 @@ class HotPlaces(models.Model):
 class WantList(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     hotplace=models.ForeignKey(HotPlaces,on_delete=models.CASCADE)
+    want_count=models.IntegerField(default=0)
 
 class Review(models.Model):
     author=models.ForeignKey(User,on_delete=models.CASCADE)
