@@ -6,7 +6,7 @@
 <hr>
 {% for item in want_data%}
 <li style='list-style-type:decimal'>
-<p>{{item.hotplace.placename}}</p>
+<p><a href="{% url 'hotplist:detail' item.hotplace.id%}">{{item.hotplace.placename}}</a></p>
 <hr>
 </li>
 {% endfor %}
@@ -15,7 +15,7 @@
 <hr>
 {% for data in review_data.all%}
 <ol>
-    <p>Place : {{data.place.placename}}</p>
+    <p>Place : <a href="{% url 'hotplist:detail'  data.place.id%}">{{data.place.placename}}</a></p>
     <p>Content : {{data.content}}</p>
     <p>Rating : {{data.rating}}</p>
     <p>Date : {{data.date}}</p>
