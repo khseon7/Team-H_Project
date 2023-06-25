@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content%}
+<h1>Hi! {{user.username}}</h1>
+<p><a href="{% url 'hotplist:index' %}">Home</a></p>
+<p>My WantList</p>
+<hr>
+{% for item in want_data%}
+<li style='list-style-type:decimal'>
+<p><a href="{% url 'hotplist:detail' item.hotplace.id%}">{{item.hotplace.placename}}</a></p>
+<hr>
+</li>
+{% endfor %}
+<br><br>
+<p>My Reviews</p>
+<hr>
+{% for data in review_data.all%}
+<ol>
+    <p>Place : <a href="{% url 'hotplist:detail'  data.place.id%}">{{data.place.placename}}</a></p>
+    <p>Content : {{data.content}}</p>
+    <p>Rating : {{data.rating}}</p>
+    <p>Date : {{data.date}}</p>
+    <hr>
+</ol>
+{% endfor %}
+{% endblock %}

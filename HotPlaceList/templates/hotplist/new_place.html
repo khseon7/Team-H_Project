@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method = "POST" action="{%url 'hotplist:new_place'%}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    {{form.errors}}
+    <button type="submit">가게 추가하기</button>
+    </form>
+{% endblock%}

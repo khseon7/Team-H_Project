@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method = "POST">
+    {% csrf_token %}
+    <h5>내용</h5>
+    <textarea label = '댓글' name = "content" rows = 15 col = 15></textarea>
+    <h5>평점(0.0~5.0의 값)</h5>
+    <input name = "rating" label = '평점'></input> 
+    
+    <button type = "submit">댓글 저장하기</button>
+    {{form.errors}}
+    </form>
+{% endblock%}

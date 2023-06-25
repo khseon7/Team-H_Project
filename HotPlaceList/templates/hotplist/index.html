@@ -1,5 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Techer H-Team 맛집게시판</h1>
-
+{% if user.is_authenticated %}
+<div>
+    <p><a href="{% url 'hotplist:logout' %}"><button>로그아웃</button></a>
+        <a href="{% url 'hotplist:my_profile' %}"><button>내 프로필</button></a></p>
+    
+</div>
+{% else %}
+<div>
+    <form method = "GET" action = "{% url 'hotplist:login' %}" >
+        <input type ="submit" Value = '로그인'>
+        <a href="{% url 'hotplist:signup' %}">회원가입</a>
+    </form>
+    
+</div>
+{% endif %}
+<hr>
+{% for items in list %}
+<li style='list-style-type:decimal'>
+    <a href = "{% url 'hotplist:detail' items.id%}">{{items.placename}}</a>
+</li>
+<hr>
+{% endfor %}
+<p><a href="{% url 'hotplist:new_place' %}"><button>맛집 추가하기</button></a></p>
 {%endblock%}
+
