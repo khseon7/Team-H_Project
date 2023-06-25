@@ -3,18 +3,20 @@
 <h1><a href="{% url 'hotplist:index' %}">Home</a></h1>
 <h1>{{HP_data.placename}}</h1>
 <img src="{{HP_data.image.url}}" width="400px">
+<p>{{HP_data.image.url}}</p>
 <p>Address : {{HP_data.address}}</p>
 <p>Phone : {{HP_data.phone}}</p>
 <p>Rating : {{HP_data.rating}}</p>
+{% if user.is_authenticated %}
+
+{%if request.user == Want_data.user and Want_data.want_count == 1 %}
+<p><a href="{% url 'hotplist:del_want_place' HP_data.id %}"><img src="\media\images\pngwing.com (1).png" width="50px" height="50px"></a></p>
+{% else %}
+<p><a href="{% url 'hotplist:want_place' HP_data.id %}"><img src="\media\images\pngegg (1).png" width="50px" height="50px"></a></p>
+{%endif%}
+<p><a href="{% url 'hotplist:new_review' HP_data.id %}"><button>리뷰 추가하기</button></a></p>
 {% if request.user.is_superuser %}
 <a href="{% url 'hotplist:delete_place' HP_data.id%}"><button>삭제</button></a>
-{%endif%}
-{% if user.is_authenticated %}
-<p><a href="{% url 'hotplist:new_review' HP_data.id %}"><button>리뷰 추가하기</button></a></p>
-{%if request.user == Want_data.user and Want_data.want_count == 1 %}
-<p><a href="{% url 'hotplist:del_want_place' HP_data.id %}"><button>찜하기 취소</button></a></p>
-{% else %}
-<p><a href="{% url 'hotplist:want_place' HP_data.id %}"><button>찜하기</button></a></p>
 {%endif%}
 {%endif%}
 <h4>리뷰</h4>
